@@ -70,6 +70,10 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         else if(menuItemId == R.id.withdraw){
             replaceFragment(WithdrawalFragment.newInstance(this));
         }
+        else if(menuItemId == R.id.logout){
+            finish();
+            gotoActivity(this, LoginActivity.class);
+        }
         return true;
     }
 }

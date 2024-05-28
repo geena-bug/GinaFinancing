@@ -15,6 +15,7 @@ import com.example.savingsapp.R;
 import com.example.savingsapp.data.SavingsData;
 import com.example.savingsapp.db.entities.TransactionHistory;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class SavingsActivityAdapter extends RecyclerView.Adapter<SavingsActivityAdapter.SavingsViewHolder> {
@@ -57,6 +58,7 @@ public class SavingsActivityAdapter extends RecyclerView.Adapter<SavingsActivity
         TransactionHistory transactionHistory = transactionHistoryList.get(position);
          holder.description.setText(transactionHistory.description);
          holder.amount.setText(context.getString(R.string.amount, transactionHistory.amount));
+         holder.dateTextView.setText(context.getString(R.string.transaction_date, transactionHistory.date));
             if(TransactionHistory.TYPE_DEPOSIT.equals(transactionHistory.type) || TransactionHistory.TYPE_INTEREST.equals(transactionHistory.type)){
                 holder.dotImage.setImageResource(R.drawable.circle_green);
                 holder.description.setTextColor(ContextCompat.getColor(context,R.color.black));
@@ -85,6 +87,7 @@ public class SavingsActivityAdapter extends RecyclerView.Adapter<SavingsActivity
        ImageView dotImage;
        TextView description;
        TextView amount;
+       TextView dateTextView;
         /**
          * Constructor
          * @param itemView The view that will be used to display the data at the specified position.
@@ -95,6 +98,7 @@ public class SavingsActivityAdapter extends RecyclerView.Adapter<SavingsActivity
             dotImage = itemView.findViewById(R.id.dot_image);
             description = itemView.findViewById(R.id.description);
             amount = itemView.findViewById(R.id.amount);
+            dateTextView = itemView.findViewById(R.id.date_text);
         }
     }
 }

@@ -1,47 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/rounded_white_bg"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:padding="5dp"
-    android:layout_marginTop="5dp"
+    android:layout_height="60dp"
+    android:background="@drawable/rounded_white_bg"
     android:layout_marginBottom="5dp"
-    android:layout_height="50dp">
+    tools:layout_editor_absoluteY="5dp">
 
-    <ImageView
-        android:id="@+id/dot_image"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:contentDescription="dot"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="5dp"
-        app:srcCompat="@drawable/circle_green" />
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_marginTop="5dp"
-        tools:text="Savings account credit" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        tools:text="$300" />
-</LinearLayout>
+        <ImageView
+            android:id="@+id/dot_image"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="dot"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/circle_green" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintStart_toEndOf="@+id/dot_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/recent_activities" />
+
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="94dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="4dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/description"
+            tools:text="$500" />
+
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="10dp"
+            android:text="TextView"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="@+id/description"
+            app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

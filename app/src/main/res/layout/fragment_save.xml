@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:background="@color/white"
+    android:padding="20dp"
+    tools:context=".MainActivity"
+    android:layout_width="fill_parent"
+    android:fillViewport="true"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:background="@color/white"
-    tools:context=".RegisterActivity">
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -101,6 +106,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/card_number_input"
                 android:inputType="number"
+                android:maxLength="16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -157,6 +163,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/card_exp_input"
                 android:layout_width="match_parent"
+                android:maxLength="5"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -173,6 +180,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/card_cvv_input"
                 android:inputType="number"
+                android:maxLength="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -197,3 +205,4 @@
         tools:layout_editor_absoluteX="137dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

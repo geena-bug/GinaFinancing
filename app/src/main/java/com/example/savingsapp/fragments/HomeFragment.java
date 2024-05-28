@@ -2,26 +2,21 @@ package com.example.savingsapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.savingsapp.R;
-import com.example.savingsapp.SaveFragment;
 import com.example.savingsapp.adapters.SavingsActivityAdapter;
-import com.example.savingsapp.data.SavingsData;
 import com.example.savingsapp.db.entities.TransactionHistory;
 import com.example.savingsapp.db.entities.User;
-import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -106,6 +101,6 @@ public class HomeFragment extends BaseFragment {
         }
         profileImage = view.findViewById(R.id.photo);
         Log.d("userPhotoPath", user.photoUrl);
-        Picasso.get().load(user.photoUrl).into(profileImage);
+        Glide.with(getActivity()).load(user.photoUrl).into(profileImage);
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +77,12 @@ public class SaveFragment extends BaseFragment implements View.OnClickListener {
         String expiry = expiryInput.getText().toString();
 
         if(amount.isEmpty() || cardNumber.isEmpty() || name.isEmpty() || cvv.isEmpty() || expiry.isEmpty()){
+            showToast(context,"All fields are required");
+            return;
+        }
+
+        if(isValidExpiryDate(expiry)){
+            showToast(context,"Invalid Expiry date");
             return;
         }
 
@@ -86,13 +95,14 @@ public class SaveFragment extends BaseFragment implements View.OnClickListener {
             appDatabase.userDao().updateUserBalanceByAmount(1, Double.parseDouble(amount));
             Log.d("SaveFragmentData", "Data saved");
         });
+
+        showToast(context,"Savings was successful");
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.save_btn){
             saveData();
-            showToast(context,"Savings was successful");
             //clear input fields
             amountInput.setText("");
             cardNumberInput.setText("");
@@ -100,5 +110,31 @@ public class SaveFragment extends BaseFragment implements View.OnClickListener {
             cvvInput.setText("");
             expiryInput.setText("");
         }
+    }
+
+    private boolean isValidExpiryDate(String expiryDate) {
+        // Regex to validate expiry date with a forward slash (e.g., "MM/YY")
+        String expiryPattern = "^(0[1-9]|1[0-2])/(\\d{2})$";
+        if (TextUtils.isEmpty(expiryDate) || !Pattern.matches(expiryPattern, expiryDate)) {
+            return false;
+        }
+
+        // Additional logic to check if the expiry date is in the future
+        Matcher matcher = Pattern.compile(expiryPattern).matcher(expiryDate);
+        if (matcher.matches()) {
+            int month = Integer.parseInt(matcher.group(1));
+            int year = Integer.parseInt(matcher.group(2)) + 2000;
+
+            // Get the current month and year
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+            int currentMonth = calendar.get(java.util.Calendar.MONTH) + 1;
+            int currentYear = calendar.get(java.util.Calendar.YEAR);
+
+            // Validate if the expiry date is in the future
+            if (year > currentYear || (year == currentYear && month >= currentMonth)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

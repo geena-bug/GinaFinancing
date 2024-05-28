@@ -14,6 +14,9 @@ public interface TransactionsDao {
     @Query("INSERT INTO transaction_history (user_id, amount, date, type, description) VALUES (:userId, :amount, :date, :type, :description)")
     long insert(int userId, double amount, String date, String type, String description);
 
+    @Insert
+    long insertObject(TransactionHistory transactionHistory);
+
     @Query("SELECT * FROM transaction_history")
     List<TransactionHistory> getAll();
 

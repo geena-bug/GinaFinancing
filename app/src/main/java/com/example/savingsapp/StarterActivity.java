@@ -8,7 +8,7 @@ import android.widget.TextView;
 public class StarterActivity extends BaseActivity implements View.OnClickListener {
 
     Button createAccountBtn;
-    TextView loginText;
+    Button loginBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +25,8 @@ public class StarterActivity extends BaseActivity implements View.OnClickListene
         createAccountBtn = findViewById(R.id.get_started);
         createAccountBtn.setOnClickListener(this);
         //init login text view
-        loginText = findViewById(R.id.login);
-        loginText.setOnClickListener(this);
+        loginBtn = findViewById(R.id.login);
+        loginBtn.setOnClickListener(this);
     }
 
     @Override
