@@ -32,7 +32,7 @@
     <string name="card_number">Card Number</string>
     <string name="card_name">Name on Card</string>
     <string name="card_cvv">CVV</string>
-    <string name="card_exp">Expiry</string>
+    <string name="card_exp">Expiry (MM/YY)</string>
     <string name="text_withdraw">Withdraw</string>
     <string name="text_withdraw_description">Enter an amount you wish to withdraw and the account to receive the money</string>
     <string name="account_number">Account Number</string>

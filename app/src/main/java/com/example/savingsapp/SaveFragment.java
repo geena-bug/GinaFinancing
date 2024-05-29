@@ -81,7 +81,7 @@ public class SaveFragment extends BaseFragment implements View.OnClickListener {
             return;
         }
 
-        if(isValidExpiryDate(expiry)){
+        if(!isValidExpiryDate(expiry)){
             showToast(context,"Invalid Expiry date");
             return;
         }
@@ -97,18 +97,19 @@ public class SaveFragment extends BaseFragment implements View.OnClickListener {
         });
 
         showToast(context,"Savings was successful");
+
+        //clear input fields
+        amountInput.setText("");
+        cardNumberInput.setText("");
+        nameInput.setText("");
+        cvvInput.setText("");
+        expiryInput.setText("");
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.save_btn){
             saveData();
-            //clear input fields
-            amountInput.setText("");
-            cardNumberInput.setText("");
-            nameInput.setText("");
-            cvvInput.setText("");
-            expiryInput.setText("");
         }
     }
 
