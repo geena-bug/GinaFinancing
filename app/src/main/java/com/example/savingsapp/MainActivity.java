@@ -27,31 +27,48 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends BaseActivity implements NavigationBarView.OnItemSelectedListener {
 
+    /**
+     * The bottom navigation view
+     */
     BottomNavigationView bottomNavigationView;
 
+    // The shared preferences
     SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // initialize views
         initViews();
+        // set shared preferences
         sharedPreferences = getSharedPreferences();
+        // check if user is logged in
         boolean isLoggedIn = sharedPreferences.getBoolean(getString(R.string.is_logged_in), false);
         if(!isLoggedIn){
             finish();
             gotoActivity(this, LoginActivity.class);
         }
+        // set alarm worker
         setAlarm();
+        // set the home fragment
         replaceFragment(HomeFragment.newInstance(this));
     }
 
+    /**
+     * Initialize the views
+     */
     void initViews(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(this);
     }
 
+    /**
+     * Replace the fragment
+     * @param fragment The fragment to replace
+     */
     private  void replaceFragment (Fragment fragment){
+        // Replace the fragment
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .add(R.id.fragment_container, fragment, null)
@@ -65,18 +82,29 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         return true;
     }
 
+    /**
+     * Handle the menu item selection
+     * @param item The menu item
+     * @return The boolean value
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.save){
-            Log.d("MainActivity", "Save clicked");
             replaceFragment(SaveFragment.newInstance(this));
         }
         return true;
     }
 
+    /**
+     * Handle the navigation item selection
+     * @param menuItem The menu item
+     * @return The boolean value
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        // Handle the navigation item selection
         int menuItemId =  menuItem.getItemId();
+        // Handle the menu item
         if(menuItemId == R.id.save){
             replaceFragment(SaveFragment.newInstance(this));
         }
@@ -98,6 +126,9 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         return true;
     }
 
+    /**
+     * Set the alarm
+     */
     private void setAlarm() {
         //getting the alarm manager
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -112,7 +143,5 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HALF_HOUR,
                 AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
-
-        //Toast.makeText(this, "Alarm is set", Toast.LENGTH_SHORT).show();
     }
 }

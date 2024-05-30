@@ -29,26 +29,25 @@ import java.util.regex.Pattern;
 
 public class WithdrawalFragment extends BaseFragment implements View.OnClickListener {
     Context context;
-
-    String[] banks = {"CIBC", "BMO", "Scotia", "Bank of Canada", "Wise"};
-
     Button withdrawalBtn;
     EditText amountInput;
     AutoCompleteTextView accountDropDown;
     EditText accountNumberInput;
     TextView addAccount;
-
     ArrayList<Account> accounts = new ArrayList<>();
-
     User user;
 
+    // Withdrawal fragment
     public WithdrawalFragment() {
         // Required empty public constructor
     }
 
     public static WithdrawalFragment newInstance(Context context) {
+        // Create a new instance of the withdrawal fragment
         WithdrawalFragment fragment = new WithdrawalFragment();
+        // Set the context
         fragment.context = context;
+        // Return the fragment
         return fragment;
     }
 
@@ -56,7 +55,7 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initAppDb(context);
-        // Get the user
+        // Get the user and accounts
         runInBackground(() -> {
             user = appDatabase.userDao().getById(1);
             accounts = (ArrayList<Account>) appDatabase.accountDao().getAll();
@@ -68,11 +67,14 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_withdrawal, container, false);
+        // Initialize the views
         initViews(view);
+        // Return the view
         return view;
     }
 
     void initViews(View view){
+        // Initialize the views
         withdrawalBtn = view.findViewById(R.id.withdrawal_btn);
         withdrawalBtn.setOnClickListener(this);
         amountInput = view.findViewById(R.id.amount_input);
@@ -80,7 +82,7 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
         addAccount = view.findViewById(R.id.add_account);
         addAccount.setOnClickListener(this);
 
-
+        // Set the account dropdown from the accounts
         String[] accountNames = new String[accounts.size()];
         for(Account account : accounts){
             accountNames[accounts.indexOf(account)] = account.accountName;
@@ -124,19 +126,22 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
 
             // Save the withdrawal
             runInBackground(() -> {
+                // Instantiate the transaction history
                 TransactionHistory transactionHistory = new TransactionHistory();
                 transactionHistory.amount = Double.parseDouble(amount);
                 transactionHistory.type = TransactionHistory.TYPE_WITHDRAW;
                 transactionHistory.description = String.format(Locale.getDefault(), "Withdrawal to %s account", account);
                 transactionHistory.date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                // Insert the transaction history
                 appDatabase.transactionsDao().insertObject(transactionHistory);
             });
 
             // Update the user balance
             runInBackground(() -> {
+                // Update the user balance
                 appDatabase.userDao().updateUserBalanceByAmount(1, -Double.parseDouble(amount));
             });
-
+            // Show a success message
             showToast(context,"Withdrawal was successful");
             // Clear input fields
             amountInput.setText("");
