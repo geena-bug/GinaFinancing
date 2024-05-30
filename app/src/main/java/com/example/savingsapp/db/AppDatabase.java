@@ -6,12 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.savingsapp.db.dao.AccountDao;
 import com.example.savingsapp.db.dao.TransactionsDao;
 import com.example.savingsapp.db.dao.UserDao;
+import com.example.savingsapp.db.entities.Account;
 import com.example.savingsapp.db.entities.TransactionHistory;
 import com.example.savingsapp.db.entities.User;
 
-@Database(entities = {User.class, TransactionHistory.class}, version = 2)
+@Database(entities = {User.class, TransactionHistory.class, Account.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     /**
@@ -56,4 +58,6 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return The transactions dao
      */
     public abstract TransactionsDao transactionsDao();
+
+    public abstract AccountDao accountDao();
 }

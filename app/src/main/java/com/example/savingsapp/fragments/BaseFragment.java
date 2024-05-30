@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.savingsapp.R;
 import com.example.savingsapp.db.AppDatabase;
 
 public class BaseFragment extends Fragment {
@@ -20,6 +21,15 @@ public class BaseFragment extends Fragment {
 
    protected void showToast(Context context, String message){
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void navigateToFragment(Fragment fragment){
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .detach(fragment)
+                .attach(fragment)
+                .commit();
     }
 
 }

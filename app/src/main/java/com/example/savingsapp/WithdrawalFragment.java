@@ -13,12 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.savingsapp.db.entities.Account;
 import com.example.savingsapp.db.entities.TransactionHistory;
 import com.example.savingsapp.db.entities.User;
 import com.example.savingsapp.fragments.BaseFragment;
+import com.example.savingsapp.fragments.HomeFragment;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -30,8 +34,11 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
 
     Button withdrawalBtn;
     EditText amountInput;
-    AutoCompleteTextView bankDropDown;
+    AutoCompleteTextView accountDropDown;
     EditText accountNumberInput;
+    TextView addAccount;
+
+    ArrayList<Account> accounts = new ArrayList<>();
 
     User user;
 
@@ -52,6 +59,7 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
         // Get the user
         runInBackground(() -> {
             user = appDatabase.userDao().getById(1);
+            accounts = (ArrayList<Account>) appDatabase.accountDao().getAll();
         });
     }
 
@@ -68,15 +76,24 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
         withdrawalBtn = view.findViewById(R.id.withdrawal_btn);
         withdrawalBtn.setOnClickListener(this);
         amountInput = view.findViewById(R.id.amount_input);
-        bankDropDown = view.findViewById(R.id.bank_drop_down);
-        accountNumberInput = view.findViewById(R.id.account_number_input);
+        accountDropDown = view.findViewById(R.id.account_drop_down);
+        addAccount = view.findViewById(R.id.add_account);
+        addAccount.setOnClickListener(this);
+
+
+        String[] accountNames = new String[accounts.size()];
+        for(Account account : accounts){
+            accountNames[accounts.indexOf(account)] = account.accountName;
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.select_dialog_item, banks);
+                (context, android.R.layout.select_dialog_item, accountNames);
         //Getting the instance of AutoCompleteTextView
-        bankDropDown = view.findViewById(R.id.bank_drop_down);
-        bankDropDown.setThreshold(1);//will start working from first character
-        bankDropDown.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+        accountDropDown = view.findViewById(R.id.account_drop_down);
+        if(!accounts.isEmpty()){
+            accountDropDown.setThreshold(1);//will start working from first character
+        }
+        accountDropDown.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
     }
 
     @Override
@@ -85,9 +102,8 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
             // Get the amount
             String amount = amountInput.getText().toString();
             // Get the bank
-            String bank = bankDropDown.getText().toString();
+            String account = accountDropDown.getText().toString();
             // Get the account number
-            String accountNumber = accountNumberInput.getText().toString();
 
             if(Double.parseDouble(amount) > user.accountBalance){
                 showToast(context,"Insufficient balance");
@@ -95,8 +111,14 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
             }
 
             // Check if any of the fields is empty
-            if(amount.isEmpty() || bank.isEmpty() || accountNumber.isEmpty()){
+            if(amount.isEmpty() || account.isEmpty()){
                 showToast(context,"All fields are required");
+                return;
+            }
+
+            //prevent 0 input
+            if (amount.equals("0")) {
+                showToast(context,"Amount cannot be 0");
                 return;
             }
 
@@ -105,7 +127,7 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
                 TransactionHistory transactionHistory = new TransactionHistory();
                 transactionHistory.amount = Double.parseDouble(amount);
                 transactionHistory.type = TransactionHistory.TYPE_WITHDRAW;
-                transactionHistory.description = String.format(Locale.getDefault(), "Withdrawal to %s", amount, bank);
+                transactionHistory.description = String.format(Locale.getDefault(), "Withdrawal to %s account", account);
                 transactionHistory.date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
                 appDatabase.transactionsDao().insertObject(transactionHistory);
             });
@@ -118,8 +140,13 @@ public class WithdrawalFragment extends BaseFragment implements View.OnClickList
             showToast(context,"Withdrawal was successful");
             // Clear input fields
             amountInput.setText("");
-            bankDropDown.setText("");
-            accountNumberInput.setText("");
+            accountDropDown.setText("");
+            navigateToFragment(HomeFragment.newInstance(context));
+        } else if (v.getId() == R.id.add_account){
+            // Navigate to the add account fragment
+            navigateToFragment(AddAccountFragment.newInstance(context));
         }
     }
+
+
 }

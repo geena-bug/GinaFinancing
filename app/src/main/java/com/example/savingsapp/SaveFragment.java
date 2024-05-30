@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import com.example.savingsapp.db.entities.TransactionHistory;
 import com.example.savingsapp.fragments.BaseFragment;
+import com.example.savingsapp.fragments.HomeFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
@@ -86,6 +87,12 @@ public class SaveFragment extends BaseFragment implements View.OnClickListener {
             return;
         }
 
+        //prevent 0 input
+        if (amount.equals("0")) {
+            showToast(context,"Amount cannot be 0");
+            return;
+        }
+
         //get current date
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String description = "Deposit into savings account";
@@ -104,6 +111,8 @@ public class SaveFragment extends BaseFragment implements View.OnClickListener {
         nameInput.setText("");
         cvvInput.setText("");
         expiryInput.setText("");
+
+        navigateToFragment(HomeFragment.newInstance(context));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.savingsapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
 
@@ -42,6 +43,11 @@ public class BaseActivity extends AppCompatActivity {
 
     boolean isPermissionGranted(String permission) {
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    protected SharedPreferences getSharedPreferences(){
+        return getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
     }
 
 }
