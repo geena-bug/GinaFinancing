@@ -1,6 +1,8 @@
 package com.example.savingsapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -72,9 +74,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 runOnUiThread(() -> showToast("Login invalid"));
             }else {
                 runOnUiThread(() -> showToast("Login successful"));
+                setIsLoggedIn();
                 //go to home activity
                 gotoActivity(LoginActivity.this, MainActivity.class);
             }
         });
+    }
+
+    void setIsLoggedIn(){
+        //set the user as logged in
+        getSharedPreferences().edit()
+                .putBoolean(getString(R.string.is_logged_in), true)
+                .apply();
     }
 }

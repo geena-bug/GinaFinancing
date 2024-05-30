@@ -36,6 +36,14 @@
     <string name="text_withdraw">Withdraw</string>
     <string name="text_withdraw_description">Enter an amount you wish to withdraw and the account to receive the money</string>
     <string name="account_number">Account Number</string>
+    <string name="account_name">Account Name</string>
     <string name="bank">Bank</string>
     <string name="transaction_date">Date: %1$s</string>
+    <string name="add_account">Add Account</string>
+    <string name="add_account_description">Add account you wish to withdraw into</string>
+    <string name="profile">Profile</string>
+    <string name="accounts">Accounts</string>
+    <string name="contact_text">To update your profile please contact us on 3062162024, info@ginafi.app</string>
+    <string name="preference_file_key">ginaFiPref</string>
+    <string name="is_logged_in">isLoggedIn</string>
 </resources>

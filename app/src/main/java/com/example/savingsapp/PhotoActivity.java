@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -107,8 +108,9 @@ public class PhotoActivity extends BaseActivity implements View.OnClickListener{
         }
 
         //String path = Environment.getExternalStorageDirectory().toString() + "/profile_photo.png";
-        dbPhotoPath = dir.getAbsolutePath() + "/profile_photo.png";
-        File file = new File(dir, "profile_photo-" + UUID.randomUUID() + ".png");
+        String fileName = "profile_photo-" + UUID.randomUUID() + ".png";
+        dbPhotoPath = dir.getAbsolutePath() + "/" + fileName;
+        File file = new File(dir, fileName);
 
         try {
             getContentResolver().delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -120,6 +122,7 @@ public class PhotoActivity extends BaseActivity implements View.OnClickListener{
             out.flush();
             MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
         } catch (IOException e) {
+            Log.d("PhotoActivity", "Error saving photo => " + e.getMessage());
             e.printStackTrace();
         }
     }
